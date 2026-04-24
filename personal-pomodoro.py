@@ -1,30 +1,30 @@
 import time
-import os
-
-def pomodoro_timer(work_mins, break_mins):
-    # Convert minutes to seconds
-    work_sec = work_mins * 60
-    break_sec = break_mins * 60
-
-    print(f"Timer started: {work_mins}m Work / {break_mins}m Break")
-    
-    while True:
-        # Work Phase
-        print("\n--- Work Time! Focus up. ---")
-        timer_countdown(work_sec)
-        
-        # Break Phase
-        print("\n--- Break Time! Stretch a bit. ---")
-        timer_countdown(break_sec)
+import sys
 
 def timer_countdown(seconds):
-    while seconds > 0:
-        mins, secs = divmod(seconds, 60)
-        # The \r allows the timer to overwrite the same line in the terminal
-        print(f"Time remaining: {mins:02d}:{secs:02d}", end="\r")
-        time.sleep(1)
-        seconds -= 1
-    print("Time's up!                      ") # Clear the line
+    try:
+        while seconds > 0:
+            mins, secs = divmod(seconds, 60)
+            print(f"Time remaining: {mins:02d}:{secs:02d}", end="\r")
+            time.sleep(1)
+            seconds -= 1
+        print("Time's up!              ")
+    except KeyboardInterrupt:
+        print("\nTimer stopped.")
+        sys.exit()
 
-# Run it: 25 mins work, 5 mins break
-pomodoro_timer(25, 5)
+def pomodoro_timer():
+    try:
+        work = int(input("Enter work minutes: "))
+        break_m = int(input("Enter break minutes: "))
+        
+        while True:
+            print("\n--- Work Time! ---")
+            timer_countdown(work * 60)
+            print("\n--- Break Time! ---")
+            timer_countdown(break_m * 60)
+    except ValueError:
+        print("Please enter valid integers.")
+
+if __name__ == "__main__":
+    pomodoro_timer()
